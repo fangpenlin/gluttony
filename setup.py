@@ -13,7 +13,7 @@ setup(
     author='Victor Lin',
     author_email='bornstub@gmail.com',
     keywords='dependency relationship',
-    url='http://pypi.python.org/pypi/Gluttony/',
+    url='http://code.google.com/p/python-gluttony/',
     install_requires=["Pip>=0.6.3"],
     packages=['gluttony'],
     license='MIT',

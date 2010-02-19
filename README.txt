@@ -16,8 +16,8 @@ To install Gluttony
 
     easy_install Gluttony
 
-Usage
-=====
+Drawing Graph
+=============
 
 To know dependency relationships
 
@@ -43,12 +43,35 @@ you want to know the relations among `TurboGears2 <http://turbogears.org/>`_ pac
 
 The result:
 
-.. image:: http://static.ez2learn.com/gluttony/turbogears2.jpg
+.. image:: http://static.ez2learn.com/gluttony/tg2.png
 
-Oops, the graph is a mess.  I didn't handle layout of graph.  
-I have not time to finish it right now.  Fortunately, if you want to get the 
+Oops, the graph is a mess.  I didn't handle layout of graph.  I have not time 
+to finish it right now.  Fortunately, you can output the graph as dot or 
+pickle format file for further handling.
+
+Output Dot File
+===============
+Fortunately, if you want to get the 
 relationships data in Python form, this tool also provide a pickle output. 
 For example:
+
+::
+
+    gluttony sprox --pydot sprox.dot
+	
+Then you can use `Graphviz <http://www.graphviz.org/>`_ for drawing beautiful 
+graph. Like this one:
+
+.. image:: http://static.ez2learn.com/gluttony/sprox_dot.png
+
+Another huge example:
+
+`Dependency relationship digram of TurboGears2 <http://static.ez2learn.com/gluttony/tg2_dot.png>`_
+
+Output Pickle File
+==================
+If you want to get the relationships data in Python form, this tool also 
+provide a pickle output. For example:
 
 ::
 
