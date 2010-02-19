@@ -8,7 +8,7 @@ except ImportError:
 
 setup(
     name='Gluttony',
-    version='0.1',
+    version='0.2',
     description= "A tool for find dependencies relationships among Python projects on PyPi",
     author='Victor Lin',
     author_email='bornstub@gmail.com',

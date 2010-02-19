@@ -1,3 +1,8 @@
+v0.2, 2010/02/19
+----------------
+ * Makes the name of nodes look better
+ * Support output dot file with PyGraphviz or Pydot 
+
 v0.1, 2010/02/19
 ----------------
  * Initial release.

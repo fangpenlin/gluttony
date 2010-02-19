@@ -108,10 +108,15 @@ class Command(object):
             metavar='FILE',
             help='Pickled filename for result output')
         self.parser.add_option(
-            '--dot', '--dot-file',
-            dest='dot_file',
+            '--pydot',
+            dest='py_dot',
             metavar='FILE',
-            help='Dot filename for result output')
+            help='Out dot file with pydot')
+        self.parser.add_option(
+            '--pygraphviz',
+            dest='py_graphviz',
+            metavar='FILE',
+            help='Out dot file with PyGraphviz')
         self.parser.add_option(
             '--display', '--display-graph',
             dest='display_graph',
@@ -176,7 +181,7 @@ class Command(object):
             logger.notify("Dependencies relationships result is in %s now", 
                           options.pickle_file)
         
-        if options.display_graph or options.dot_file:
+        if options.display_graph or options.py_dot or options.py_graphviz:
             import networkx as nx
             # extract name and version
             def convert(pair):
@@ -184,9 +189,16 @@ class Command(object):
             plainDependencies = map(convert, dependencies)
             dg = nx.DiGraph()
             dg.add_edges_from(plainDependencies)
-            if options.dot_file:
-                logger.notify("Writing dot to %s ...", options.dot_file)
-                nx.write_dot(dg, options.dot_file)
+            if options.py_dot:
+                logger.notify("Writing dot to %s with Pydot ...", 
+                              options.py_dot)
+                from networkx.drawing.nx_pydot import write_dot
+                write_dot(dg, options.py_dot)
+            if options.py_graphviz:
+                logger.notify("Writing dot to %s with PyGraphviz ...", 
+                              options.py_graphviz)
+                from networkx.drawing.nx_agraph import write_dot
+                write_dot(dg, options.py_graphviz)
             if options.display_graph:
                 import matplotlib.pyplot as plt
                 logger.notify("Drawing graph ...")
