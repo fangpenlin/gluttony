@@ -29,7 +29,7 @@ class Command(object):
     bundle = False
     
     def __init__(self):
-        self.parser = optparse.OptionParser()
+        self.parser = optparse.OptionParser(version="%prog 0.2")
         self.parser.add_option(
             '-e', '--editable',
             dest='editables',
