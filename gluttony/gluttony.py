@@ -17,6 +17,14 @@ from pip.locations import build_prefix, src_prefix
 
 from dependency import traceDependencys
 
+def getProjectName(req):
+    """Get project name in a pretty form:
+    
+    name-version
+    
+    """
+    return '%s-%s' % (req.name, req.installed_version)
+
 class Command(object):
     bundle = False
     
@@ -105,7 +113,7 @@ class Command(object):
             metavar='FILE',
             help='Dot filename for result output')
         self.parser.add_option(
-            '--display-graph',
+            '--display', '--display-graph',
             dest='display_graph',
             action='store_true',
             help='Display graph with Networkx and matplotlib')
@@ -169,19 +177,21 @@ class Command(object):
                           options.pickle_file)
         
         if options.display_graph or options.dot_file:
-            try:
-                import networkx as nx
+            import networkx as nx
+            # extract name and version
+            def convert(pair):
+                return (getProjectName(pair[0]), getProjectName(pair[1]))
+            plainDependencies = map(convert, dependencies)
+            dg = nx.DiGraph()
+            dg.add_edges_from(plainDependencies)
+            if options.dot_file:
+                logger.notify("Writing dot to %s ...", options.dot_file)
+                nx.write_dot(dg, options.dot_file)
+            if options.display_graph:
                 import matplotlib.pyplot as plt
-                dg = nx.DiGraph()
-                dg.add_edges_from(dependencies)
-                if options.dot_file:
-                    nx.write_dot(dg, options.dot_file)
-                if options.display_graph:
-                    nx.draw(dg)
-                    plt.show()
-            except ImportError:
-                logger.error("In order to display graph, you must install networkx and matplotlib")
-                return
+                logger.notify("Drawing graph ...")
+                nx.draw(dg)
+                plt.show()
     
     def main(self, args):
         options, args = self.parser.parse_args(args)
