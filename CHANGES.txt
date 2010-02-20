@@ -1,3 +1,9 @@
+v0.3, 2010/02/20
+----------------
+ * Add --ignore-installed and --upgrade back, now you have choice to run 
+   gluttony on installed packages or on pypi
+ * Fix bug of drawing no dependency diagram.
+
 v0.2, 2010/02/19
 ----------------
  * Makes the name of nodes look better

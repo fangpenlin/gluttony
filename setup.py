@@ -6,15 +6,17 @@ except ImportError:
     use_setuptools()
     from setuptools import setup
 
+import gluttony
+
 setup(
     name='Gluttony',
-    version='0.2',
+    version=gluttony.__version__,
     description= "A tool for find dependencies relationships among Python projects on PyPi",
     author='Victor Lin',
     author_email='bornstub@gmail.com',
     keywords='dependency relationship',
     url='http://code.google.com/p/python-gluttony/',
-    install_requires=["Pip>=0.6.3"],
+    install_requires=["Pip>=0.6.3", "networkx>=1.0.1"],
     packages=['gluttony'],
     license='MIT',
     long_description=open('README.txt').read(),

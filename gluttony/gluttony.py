@@ -17,6 +17,8 @@ from pip.locations import build_prefix, src_prefix
 
 from dependency import traceDependencys
 
+__version__ = '0.3'
+
 def getProjectName(req):
     """Get project name in a pretty form:
     
@@ -29,7 +31,7 @@ class Command(object):
     bundle = False
     
     def __init__(self):
-        self.parser = optparse.OptionParser(version="%prog 0.2")
+        self.parser = optparse.OptionParser(version="%prog " + __version__)
         self.parser.add_option(
             '-e', '--editable',
             dest='editables',
@@ -75,7 +77,6 @@ class Command(object):
             action='store_true',
             default=False,
             help='Ignore package index (only looking at --find-links URLs instead)')
-
         self.parser.add_option(
             '-b', '--build', '--build-dir', '--build-directory',
             dest='build_dir',
@@ -100,6 +101,16 @@ class Command(object):
             metavar='DIR',
             default=None,
             help='Check out --editable packages into DIR (default %s)' % src_prefix)
+        self.parser.add_option(
+            '-U', '--upgrade',
+            dest='upgrade',
+            action='store_true',
+            help='Upgrade all packages to the newest available version')
+        self.parser.add_option(
+            '-I', '--ignore-installed',
+            dest='ignore_installed',
+            action='store_true',
+            help='Ignore the installed packages (reinstalling instead)')
         
         # options for output
         self.parser.add_option(
@@ -146,8 +157,8 @@ class Command(object):
             src_dir=options.src_dir,
             download_dir=options.download_dir,
             download_cache=options.download_cache,
-            upgrade=False,
-            ignore_installed=True,
+            upgrade=options.upgrade,
+            ignore_installed=options.ignore_installed,
             ignore_dependencies=False)
         
         requirements = []
@@ -202,8 +213,11 @@ class Command(object):
             if options.display_graph:
                 import matplotlib.pyplot as plt
                 logger.notify("Drawing graph ...")
-                nx.draw(dg)
-                plt.show()
+                if not plainDependencies:
+                    logger.notify("There is no dependency to draw.")
+                else:
+                    nx.draw(dg)
+                    plt.show()
     
     def main(self, args):
         options, args = self.parser.parse_args(args)
