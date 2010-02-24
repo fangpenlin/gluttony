@@ -1,3 +1,7 @@
+v0.4, 2010/02/25
+----------------
+ * Fix broken easy_install problem of 0.3 version
+
 v0.3, 2010/02/20
 ----------------
  * Add --ignore-installed and --upgrade back, now you have choice to run 
