@@ -132,6 +132,11 @@ class Command(object):
             dest='display_graph',
             action='store_true',
             help='Display graph with Networkx and matplotlib')
+        self.parser.add_option(
+            '-R', '--reverse',
+            dest='reverse',
+            action='store_true',
+            help='Reverse the direction of edge')
 
     def run(self, options, args):
         if not options.build_dir:
@@ -184,6 +189,9 @@ class Command(object):
         """Output result
         
         """
+        if options.reverse:
+            dependencies = map(lambda x: x[::-1], dependencies)
+        
         if options.pickle_file:
             file = open(options.pickle_file, 'wb')
             pickle.dump(dependencies, file)
