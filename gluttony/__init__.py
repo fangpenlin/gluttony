@@ -1,2 +1,1 @@
-from gluttony import *
-from gluttony import __version__
+from version import __version__

@@ -16,8 +16,7 @@ from pip.req import RequirementSet, InstallRequirement, parse_requirements
 from pip.locations import build_prefix, src_prefix
 
 from dependency import traceDependencys
-
-__version__ = '0.3'
+from version import __version__
 
 def getProjectName(req):
     """Get project name in a pretty form:
