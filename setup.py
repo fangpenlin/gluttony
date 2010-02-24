@@ -21,5 +21,5 @@ setup(
     license='MIT',
     long_description=open('README.txt').read(),
     entry_points={
-        'console_scripts': ['gluttony = gluttony:main']},
+        'console_scripts': ['gluttony = gluttony.gluttony:main']},
 )
