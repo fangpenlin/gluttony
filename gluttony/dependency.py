@@ -1,11 +1,3 @@
-'''
-Created on 2010/2/19
-
-@author: Victor Lin (bornstub@gmail.com)
-         Twitter: http://twitter.com/victorlin
-         Blog: http://blog.ez2learn.com
-'''
-
 import os
 
 import pkg_resources

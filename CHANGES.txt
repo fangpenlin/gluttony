@@ -1,3 +1,7 @@
+v0.5, 2011/02/19
+----------------
+ * Fix problem caused by change of new pip
+
 v0.4, 2010/02/25
 ----------------
  * Fix broken easy_install problem of 0.3 version

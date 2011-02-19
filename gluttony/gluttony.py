@@ -1,10 +1,3 @@
-'''
-Created on 2010/2/19
-
-@author: Victor Lin (bornstub@gmail.com)
-         Twitter: http://twitter.com/victorlin
-         Blog: http://blog.ez2learn.com
-'''
 import sys
 import os
 import optparse
@@ -156,7 +149,7 @@ class Command(object):
         finder = PackageFinder(
             find_links=options.find_links,
             index_urls=index_urls)
-        requirementSet = RequirementSet(
+        requirement_set = RequirementSet(
             build_dir=options.build_dir,
             src_dir=options.src_dir,
             download_dir=options.download_dir,
@@ -165,25 +158,21 @@ class Command(object):
             ignore_installed=options.ignore_installed,
             ignore_dependencies=False)
         
-        requirements = []
         for name in args:
-            requirements.append(
+            requirement_set.add_requirement(
                 InstallRequirement.from_line(name, None))
         for name in options.editables:
-            requirements.append(
+            requirement_set.add_requirement(
                 InstallRequirement.from_editable(name, default_vcs=options.default_vcs))
         for filename in options.requirements:
             for req in parse_requirements(filename, finder=finder, options=options):
-                requirements.append(req)
-        # add all requirements into requirements set
-        for req in requirements:
-            requirementSet.add_requirement(req)
+                requirement_set.add_requirement(req)
         
-        requirementSet.install_files(finder, 
-                                      force_root_egg_info=self.bundle, 
-                                      bundle=self.bundle)
+        requirement_set.prepare_files(finder, 
+                                     force_root_egg_info=self.bundle, 
+                                     bundle=self.bundle)
         
-        return requirements, requirementSet
+        return requirement_set
     
     def output(self, options, args, dependencies):
         """Output result
@@ -236,12 +225,12 @@ class Command(object):
         logger.level_for_integer(level)
         logger.consumers.extend([(level, sys.stdout)])
         # get all files
-        requirements, requirementSet = self.run(options, args)
+        requirement_set = self.run(options, args)
         # trace dependencies
         logger.notify("Tracing dependencies ...")
         dependencies = []
-        for req in requirements:
-            traceDependencys(req, requirementSet, dependencies)
+        for req in requirement_set.requirements.itervalues():
+            traceDependencys(req, requirement_set, dependencies)
         # output the result
         logger.notify("Output result ...")
         self.output(options, args, dependencies)
