@@ -229,7 +229,12 @@ class Command(object):
         # trace dependencies
         logger.notify("Tracing dependencies ...")
         dependencies = []
-        for req in requirement_set.requirements.itervalues():
+        values = None
+        if hasattr(requirement_set.requirements, 'itervalues'):
+            values = list(requirement_set.requirements.itervalues())
+        elif hasattr(requirement_set.requirements, 'values'):
+            values = list(requirement_set.requirements.values())
+        for req in values:
             traceDependencys(req, requirement_set, dependencies)
         # output the result
         logger.notify("Output result ...")
