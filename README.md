@@ -96,5 +96,5 @@ See some beautiful Python package dependencies relationship diagram :)
 ## Author
 
  - Victor Lin (bornstub at gmail.com)
- - Twitter: [victorlin](http://twitter.com/victorlin>)
+ - Twitter: [victorlin](http://twitter.com/victorlin)
  - Blog: [Victor's Blog](http://victorlin.me)
