@@ -1,0 +1,52 @@
+*.py[cod]
+
+# C extensions
+*.so
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+cover
+.coverage
+.tox
+nosetests.xml
+
+# Translations
+*.mo
+
+# Mrs. Developer
+.mr.developer.cfg
+.project
+.pydevproject
+*.sublime-project
+*.sublime-workspace
+
+# virtualenv
+env
+
+# SQLite database
+*.db
+*.sqlite
+
+# Vagrant
+.vagrant
+docs/_build/
+
+# intellij
+*.iml

@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import sys
 import os
 import optparse
@@ -8,11 +9,11 @@ from pip.index import PackageFinder
 from pip.req import RequirementSet, InstallRequirement, parse_requirements
 from pip.locations import build_prefix, src_prefix
 
-from dependency import traceDependencys
+from dependency import trace_dependencies
 from version import __version__
 
 
-def getProjectName(req):
+def pretty_project_name(req):
     """Get project name in a pretty form:
     
     name-version
@@ -116,12 +117,12 @@ class Command(object):
             '--pydot',
             dest='py_dot',
             metavar='FILE',
-            help='Out dot file with pydot')
+            help='Output dot file with pydot')
         self.parser.add_option(
             '--pygraphviz',
             dest='py_graphviz',
             metavar='FILE',
-            help='Out dot file with PyGraphviz')
+            help='Output dot file with PyGraphviz')
         self.parser.add_option(
             '--display', '--display-graph',
             dest='display_graph',
@@ -158,7 +159,8 @@ class Command(object):
             download_cache=options.download_cache,
             upgrade=options.upgrade,
             ignore_installed=options.ignore_installed,
-            ignore_dependencies=False)
+            ignore_dependencies=False,
+        )
         
         for name in args:
             requirement_set.add_requirement(
@@ -170,9 +172,11 @@ class Command(object):
             for req in parse_requirements(filename, finder=finder, options=options):
                 requirement_set.add_requirement(req)
         
-        requirement_set.prepare_files(finder, 
-                                     force_root_egg_info=self.bundle, 
-                                     bundle=self.bundle)
+        requirement_set.prepare_files(
+            finder, 
+            force_root_egg_info=self.bundle, 
+            bundle=self.bundle,
+        )
         
         return requirement_set
     
@@ -195,10 +199,13 @@ class Command(object):
 
             # extract name and version
             def convert(pair):
-                return (getProjectName(pair[0]), getProjectName(pair[1]))
-            plainDependencies = map(convert, dependencies)
+                return (
+                    pretty_project_name(pair[0]), 
+                    pretty_project_name(pair[1]),
+                )
+            plain_dependencies = map(convert, dependencies)
             dg = nx.DiGraph()
-            dg.add_edges_from(plainDependencies)
+            dg.add_edges_from(plain_dependencies)
             if options.py_dot:
                 logger.notify("Writing dot to %s with Pydot ...", 
                               options.py_dot)
@@ -212,7 +219,7 @@ class Command(object):
             if options.display_graph:
                 import matplotlib.pyplot as plt
                 logger.notify("Drawing graph ...")
-                if not plainDependencies:
+                if not plain_dependencies:
                     logger.notify("There is no dependency to draw.")
                 else:
                     nx.draw(dg)
@@ -238,12 +245,13 @@ class Command(object):
         elif hasattr(requirement_set.requirements, 'values'):
             values = list(requirement_set.requirements.values())
         for req in values:
-            traceDependencys(req, requirement_set, dependencies)
+            trace_dependencies(req, requirement_set, dependencies)
+        requirement_set.cleanup_files()
         # output the result
         logger.notify("Output result ...")
         self.output(options, args, dependencies)
 
-  
+
 def main():
     command = Command()
     command.main(sys.argv[1:])
