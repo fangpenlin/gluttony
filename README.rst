@@ -2,8 +2,11 @@
 Gluttony
 ========
 
-Gluttony is a tool for finding dependency relationships among Python 
-prjects in PyPi, it is based on `pip <http://pip.openplans.org/>`_.
+.. image:: https://travis-ci.org/victorlin/gluttony.png
+   :target: https://travis-ci.org/victorlin/gluttony
+
+Gluttony is a tool for finding dependency relationships between Python 
+packages, it is based on `pip <http://pip.openplans.org/>`_.
 
 .. image:: http://static.ez2learn.com/gluttony/gluttony.jpg
 
@@ -14,7 +17,7 @@ To install Gluttony
 
 ::
 
-    easy_install Gluttony
+    pip install Gluttony
     
 Usage
 =====
@@ -97,4 +100,4 @@ Author
 
  * Victor Lin (bornstub at gmail.com)
  * Twitter: `victorlin <http://twitter.com/victorlin>`_
- * Blog: `Victor's Blog <http://blog.ez2learn.com>`_
+ * Blog: `Victor's Blog <http://victorlin.me>`_
