@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 import sys
 import os
 import optparse
-import pickle
+import json
 
 from pip.log import logger
 from pip.index import PackageFinder
@@ -109,10 +109,10 @@ class Command(object):
         
         # options for output
         self.parser.add_option(
-            '-p', '--pickle', '--pickle-file',
-            dest='pickle_file',
+            '-j', '--json',
+            dest='json_file',
             metavar='FILE',
-            help='Pickled filename for result output')
+            help='JSON filename for result output')
         self.parser.add_option(
             '--pydot',
             dest='py_dot',
@@ -179,6 +179,30 @@ class Command(object):
         )
         
         return requirement_set
+
+    def _output_json(self, json_file, dependencies):
+        packages = set()
+        json_deps = []
+        for src, dest in dependencies:
+            packages.add(src)
+            packages.add(dest)
+            json_deps.append([
+                pretty_project_name(src),
+                pretty_project_name(dest),
+            ])
+
+        json_packages = []
+        for package in packages:
+            json_packages.append(dict(
+                name=package.name,
+                installed_version=package.installed_version,
+            ))
+
+        with open(json_file, 'wt') as jfile:
+            json.dump(dict(
+                packages=json_packages,
+                dependencies=json_deps,
+            ), jfile, sort_keys=True, indent=4, separators=(',', ': '))
     
     def output(self, options, args, dependencies):
         """Output result
@@ -187,12 +211,10 @@ class Command(object):
         if options.reverse:
             dependencies = map(lambda x: x[::-1], dependencies)
         
-        if options.pickle_file:
-            file = open(options.pickle_file, 'wb')
-            pickle.dump(dependencies, file)
-            file.close()
+        if options.json_file:
+            self._output_json(options.json_file, dependencies)
             logger.notify("Dependencies relationships result is in %s now", 
-                          options.pickle_file)
+                          options.json_file)
         
         if options.display_graph or options.py_dot or options.py_graphviz:
             import networkx as nx
@@ -246,10 +268,10 @@ class Command(object):
             values = list(requirement_set.requirements.values())
         for req in values:
             trace_dependencies(req, requirement_set, dependencies)
-        requirement_set.cleanup_files()
         # output the result
         logger.notify("Output result ...")
         self.output(options, args, dependencies)
+        requirement_set.cleanup_files()
 
 
 def main():

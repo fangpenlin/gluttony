@@ -3,7 +3,7 @@ import os
 import unittest
 import tempfile
 import shutil
-import pickle
+import json
 
 from gluttony import commands
 
@@ -16,16 +16,32 @@ class TestGluttony(unittest.TestCase):
         shutil.rmtree(self.temp_dir)
 
     def test_command(self):
-        pickle_path = os.path.join(self.temp_dir, 'flask.pickle')
+        json_path = os.path.join(self.temp_dir, 'flask.json')
 
         command = commands.Command()
-        command.main(['flask==0.10.1', '--pickle={}'.format(pickle_path)])
+        command.main(['flask==0.10.1', '--json={}'.format(json_path)])
 
-        with open(pickle_path, 'rb') as pfile:
-            dependencies = pickle.load(pfile)
+        with open(json_path, 'rb') as jfile:
+            result = json.load(jfile)
+
+        pkg_map = {}
+        packages = set([p['name'] for p in result['packages']])
+        expected_packages = set([
+            'flask', 
+            'Werkzeug', 
+            'itsdangerous', 
+            'Jinja2',
+            'markupsafe',
+        ])
+        self.assertEqual(packages, expected_packages)
+
+        for p in result['packages']:
+            pkg_map[p['name']] = p
+        self.assertEqual(pkg_map['flask']['installed_version'], '0.10.1')
 
         dependencies = set([
-            (src.name, dest.name) for src, dest in dependencies
+            (src.split('-')[0], dest.split('-')[0]) 
+            for src, dest in result['dependencies']
         ])
         expected_dependencies = set([
             ('flask', 'Werkzeug'),

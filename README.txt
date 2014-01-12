@@ -65,7 +65,7 @@ The result:
 
 Oops, the graph is a little bit messy. Currently, the layout of graph is
 not handled properly. However, it's not a big deal, you can output the
-graph as dot or pickle format file for further processing.
+graph as dot or JSON format file for further processing.
 
 Output Graphviz File
 --------------------
@@ -88,17 +88,17 @@ Another huge example:
 .. figure:: http://static.ez2learn.com/gluttony/tg2_dot.png
    :alt: Dependency relationship digram of TurboGears2
 
-Output Pickle File
-------------------
+Output JSON File
+----------------
 
 If you want to get the raw relationship data in Python, this tool also
-provides a pickle output format. For example:
+provides a JSON output format. For example:
 
 ::
 
-    gluttony sprox --pickle sprox.pickle
+    gluttony pyramid --json=pyramid.json
 
-Then you can use ``pickle.load`` to load it into Python for further
+Then you can use ``json.load`` to load it into Python for further
 processing.
 
 Gallery
