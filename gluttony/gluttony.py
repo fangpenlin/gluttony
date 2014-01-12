@@ -11,6 +11,7 @@ from pip.locations import build_prefix, src_prefix
 from dependency import traceDependencys
 from version import __version__
 
+
 def getProjectName(req):
     """Get project name in a pretty form:
     
@@ -18,6 +19,7 @@ def getProjectName(req):
     
     """
     return '%s-%s' % (req.name, req.installed_version)
+
 
 class Command(object):
     bundle = False
@@ -190,6 +192,7 @@ class Command(object):
         
         if options.display_graph or options.py_dot or options.py_graphviz:
             import networkx as nx
+
             # extract name and version
             def convert(pair):
                 return (getProjectName(pair[0]), getProjectName(pair[1]))
@@ -221,7 +224,7 @@ class Command(object):
             self.parser.print_help()
             return
         
-        level = 1 # Notify
+        level = 1  # Notify
         logger.level_for_integer(level)
         logger.consumers.extend([(level, sys.stdout)])
         # get all files
@@ -239,7 +242,8 @@ class Command(object):
         # output the result
         logger.notify("Output result ...")
         self.output(options, args, dependencies)
-        
+
+  
 def main():
     command = Command()
     command.main(sys.argv[1:])

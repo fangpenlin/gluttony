@@ -6,6 +6,7 @@ from pip.index import PackageFinder
 from pip.req import RequirementSet, InstallRequirement
 from pip.locations import build_prefix, src_prefix
 
+
 def traceDependencys(req, requirementSet, dependencies, _visited=None):
     """Trace all dependency relationship
     
@@ -28,6 +29,7 @@ def traceDependencys(req, requirementSet, dependencies, _visited=None):
         subreq = requirementSet.get_requirement(name)
         dependencies.append((req, subreq))
         traceDependencys(subreq, requirementSet, dependencies, _visited)
+
 
 def getDependencies(name, requirementSet=None, finder=None):
     """Get dependencies of a python project
