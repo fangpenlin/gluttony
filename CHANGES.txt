@@ -1,3 +1,8 @@
+v0.8, 2014/01/12
+----------------
+ * Fix version number is None caused by build folder removed too early
+ * Remove pickle output format, add JSON instead
+
 v0.7, 2014/01/12
 ----------------
  * Fix build folder is not removed issue
