@@ -6,7 +6,7 @@ use_setuptools()
 from setuptools import setup
     
 here = os.path.abspath(os.path.dirname(__file__))
-readme = open(os.path.join(here, 'README.rst')).read()
+readme = open(os.path.join(here, 'README.txt')).read()
 requires = open(os.path.join(here, 'requirements.txt')).read()
 requires = map(lambda r: r.strip(), requires.splitlines())
 test_requires = open(os.path.join(here, 'test-requirements.txt')).read()
@@ -30,6 +30,7 @@ setup(
     url='http://github.com/victorlin/gluttony',
     install_requires=requires,
     tests_require=test_requires,
+    include_package_data=True,
     packages=['gluttony'],
     license='MIT',
     entry_points={

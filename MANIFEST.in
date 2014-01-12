@@ -1,0 +1,6 @@
+include distribute_setup.py
+include requirements.txt
+include test-requirements.txt
+include README.txt
+recursive-include gluttony
+prune env
